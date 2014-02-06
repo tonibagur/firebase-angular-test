@@ -1,0 +1,29 @@
+<div class="well" ng-app="chat" ng-controller="Chat">
+    <table>
+    <tr ng-cloak ng-repeat="(key,value) in data">
+    <td>{{key}}</td>
+        <td ng-cloak ng-repeat="(key2,value2) in value">
+        {{key2}}:<input type="text" ng-model="data[key][key2]"></input>
+        </td>
+    </tr>
+
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+<script src="https://cdn.firebase.com/v0/firebase.js"></script>
+<script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
+<script type="text/javascript">
+
+
+  angular.module('chat', ['firebase'])
+    .factory("sampleService", ["$firebase", function($firebase) {
+        var ref3 = new Firebase("https://prova-andreu.firebaseio.com/data");
+        return $firebase(ref3);
+      }])
+
+    .controller('Chat', ['$scope', '$firebase',"sampleService",
+    function($scope, $firebase, service) {
+      service.$bind($scope, "data");
+
+      }]);
+</script>

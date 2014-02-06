@@ -1,0 +1,63 @@
+<div class="well" ng-app="chat" ng-controller="Chat">
+
+<form class="form-inline"  style="margin-left:15px;">
+
+    <table>
+        <tr ng-cloak ng-repeat="(key,value) in data">
+            <td ng-cloak ng-repeat="(key2,value2) in value">
+                {{key2}}:<input type="text" ng-model="data[key][key2]"></input>
+            </td>
+            <td>
+                <button class="btn" type="submit" ng-click="deleteElem(key)">
+                  <i class="icon-reply">Delete</i>
+                </button>
+            </td>
+        </tr>
+    </table>
+
+            <div ng-cloak ng-repeat="(k,v) in cols" style="float:left">
+                {{cols[k].column_name}}
+                <input type="text" ng-model="vals_add[cols[k].column_name]"></input>
+            </div>
+            <div>
+                <button class="btn" type="submit" ng-click="addElem()">
+                  <i class="icon-reply"> Add</i>
+                </button>
+            </div>
+</form>
+
+
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+<script src="https://cdn.firebase.com/v0/firebase.js"></script>
+<script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
+<script type="text/javascript">
+
+
+  angular.module('chat', ['firebase'])
+    .factory("sampleService", ["$firebase", function($firebase) {
+        var ref_data = new Firebase("https://agents-app.firebaseio.com/data");
+        return $firebase(ref_data);
+      }])
+
+    .controller('Chat', ['$scope', '$firebase',"sampleService",
+        function($scope, $firebase, service) {
+          service.$bind($scope, "data");
+          var ref_template = new Firebase('https://agents-app.firebaseio.com/template');
+          $scope.cols = $firebase(ref_template);
+          $scope.vals_add={};  
+                  
+          $scope.addElem = function() {
+            $scope.data.$add($scope.vals_add);
+            $scope.vals_add={};
+            
+          }
+
+          $scope.deleteElem = function(id){
+            var elemRef = new Firebase("https://agents-app.firebaseio.com/data" + '/' + id);
+            elemRef.remove();
+          }
+
+        }]);
+</script>

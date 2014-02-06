@@ -1,0 +1,20 @@
+{
+"data":
+    [
+        {"agent_code":"valor agent code","last_date":"valor last_date"},
+        {"agent_code":"valor agent code2","last_date":"valor last_date2"}
+    ],
+
+"template":
+    [
+        {
+            "column_name":"agent_code",
+            "column_desc":"Cod Agente"
+        },
+        {
+            "column_name":"last_date",
+            "column_desc":"Última fecha de ejecución"
+        }
+    ]
+
+}

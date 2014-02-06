@@ -1,0 +1,53 @@
+<div class="well" ng-app="chat" ng-controller="Chat">
+  <form class="form-inline">
+    Your name: <input type="text" ng-model="username">
+  </form>
+  <div ng-cloak ng-repeat="message in messages">
+    <em>{{message.name}}: </em>{{message.text}}
+  </div><br/>
+  <form class="form-inline" ng-submit="addMessage()">
+    <input type="text" ng-model="message" placeholder="Message...">
+    <button class="btn" type="submit">
+      <i class="icon-reply"> Send</i>
+    </button>
+
+  
+    <div ng-cloak ng-repeat="(key,value) in data">
+    {{key}}:
+        <div ng-cloak ng-repeat="(key2,value2) in value">
+        {{key2}}:<input type="text" ng-model="data[key][key2]"></input>
+        </div>
+    </div>
+
+    </form>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+<script src="https://cdn.firebase.com/v0/firebase.js"></script>
+<script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
+<script type="text/javascript">
+
+
+  angular.module('chat', ['firebase'])
+    .factory("sampleService", ["$firebase", function($firebase) {
+        var ref3 = new Firebase("https://prova-andreu.firebaseio.com/data");
+        return $firebase(ref3);
+      }])
+
+    .controller('Chat', ['$scope', '$firebase',"sampleService",
+    function($scope, $firebase, service) {
+      service.$bind($scope, "data");
+
+      //var ref2 = new Firebase('https://prova-andreu.firebaseio.com/data');
+      //$scope.data = $firebase(ref2);
+
+      var ref = new Firebase('https://prova-andreu.firebaseio.com/chat');
+      $scope.messages = $firebase(ref.limit(15));
+      $scope.username = 'Guest' + Math.floor(Math.random()*101);
+      $scope.addMessage = function() {
+        $scope.messages.$add({
+          name: $scope.username, text: $scope.message
+        });
+        $scope.message = "";
+      }}]);
+</script>
