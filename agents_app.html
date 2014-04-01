@@ -1,4 +1,4 @@
-<div class="well" ng-app="chat" ng-controller="Chat">
+<div class="well" ng-app="agents_app" ng-controller="AgentsController">
 
 <form class="form-inline"  style="margin-left:15px;">
 
@@ -15,15 +15,15 @@
         </tr>
     </table>
 
-            <div ng-cloak ng-repeat="(k,v) in cols" style="float:left">
-                {{cols[k].column_name}}
-                <input type="text" ng-model="vals_add[cols[k].column_name]"></input>
-            </div>
-            <div>
-                <button class="btn" type="submit" ng-click="addElem()">
-                  <i class="icon-reply"> Add</i>
-                </button>
-            </div>
+    <div ng-cloak ng-repeat="(k,v) in cols" style="float:left">
+        {{cols[k].column_name}}
+        <input type="text" ng-model="vals_add[cols[k].column_name]"></input>
+    </div>
+    <div>
+        <button class="btn" type="submit" ng-click="addElem()">
+          <i class="icon-reply"> Add</i>
+        </button>
+    </div>
 </form>
 
 
@@ -34,14 +34,13 @@
 <script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
 <script type="text/javascript">
 
-
-  angular.module('chat', ['firebase'])
+  angular.module('agents_app', ['firebase'])
     .factory("sampleService", ["$firebase", function($firebase) {
         var ref_data = new Firebase("https://agents-app.firebaseio.com/data");
         return $firebase(ref_data);
       }])
 
-    .controller('Chat', ['$scope', '$firebase',"sampleService",
+    .controller('AgentsController', ['$scope', '$firebase',"sampleService",
         function($scope, $firebase, service) {
           service.$bind($scope, "data");
           var ref_template = new Firebase('https://agents-app.firebaseio.com/template');
